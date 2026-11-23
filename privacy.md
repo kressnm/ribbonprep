@@ -4,15 +4,15 @@ title: Privacy Policy
 permalink: /privacy/
 ---
 
-**Last updated: November 23, 2026**
+**Last updated: November 23, 2026** (added automatic iCloud backup)
 
 Ribbon Prep ("the app") is an independent study aid for people preparing for the Oncology Certified Nurse (OCN) exam. It is made by the Ribbon Prep developer. It is not affiliated with or endorsed by the Oncology Nursing Certification Corporation (ONCC).
 
-**The short version:** the app has no accounts and no cross-app tracking. What you enter (your name, answers, notes) stays on your phone unless you choose to send or save it somewhere. The app sends anonymous usage counts, such as which screens are opened, that can't be tied to you; you can turn this off in Settings. The developer does not sell any information.
+**The short version:** the app has no accounts and no cross-app tracking. What you enter (your name, answers, notes) stays on your phone and, if you use iCloud, in a backup in your own iCloud account that only you can see. It is never sent to the developer. The app sends anonymous usage counts, such as which screens are opened, that can't be tied to you; you can turn this off in Settings. The developer does not sell any information.
 
 ## What the app stores on your phone
 
-To work, the app saves the following on your phone only:
+To work, the app saves the following on your phone:
 
 - Your first name, exam date, and daily question goal, if you enter them
 - Which practice questions you answered, whether you got them right, and when missed questions are due for review
@@ -22,7 +22,7 @@ To work, the app saves the following on your phone only:
 - Your practice exam scores, and a practice exam in progress so you can resume it
 - Your settings, such as appearance, haptics, and reminder time
 
-None of this is sent to the developer or to anyone else. Deleting the app deletes it. The reset option in Settings erases your answers and scores (notes and stars are kept).
+None of this is sent to the developer or to anyone else. Deleting the app deletes it from your phone (an iCloud backup, if you have one, stays in your iCloud; see below). The reset option in Settings erases your answers and scores (notes and stars are kept).
 
 ## What the app does not do
 
@@ -41,6 +41,13 @@ To learn which parts of the app are useful, the app sends anonymous usage data t
 - **How it stays anonymous:** the app creates a random ID on your phone (not your device's identifier or your Apple account) and scrambles it with a one-way hash before sending, so events can't be linked to you or your device. TelemetryDeck hashes it again on their side. The data is not used for advertising and is not sold or shared.
 
 On the App Store this is listed as "Data Not Linked to You: Usage Data."
+
+## Automatic iCloud backup
+
+If you are signed in to iCloud with iCloud Drive turned on, the app saves a backup of the information listed above (except a practice exam in progress) to your own iCloud account once a day and when you leave the app. It keeps the newest seven daily backups. This is so you can get your progress back after reinstalling the app or on a new phone; the app offers to restore it the first time it opens.
+
+- The backup is stored in your iCloud account, under Apple's iCloud terms. The developer cannot see, open, or receive it.
+- Turn it off in the app (Settings, iCloud backup) or in your phone's Settings (your name, iCloud). To delete it, go to your phone's Settings, your name, iCloud, Manage Account Storage (or Manage Storage), Ribbon Prep.
 
 ## Notifications and the Lock Screen timer
 

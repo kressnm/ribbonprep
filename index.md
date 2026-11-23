@@ -15,10 +15,10 @@ Found a mistake in a question or flashcard? Open it in the app and tap **Report 
 ## Frequently asked questions
 
 **Is my progress saved if I delete the app?**
-Not on its own. Everything is stored only on your phone, which is how the app keeps your information private. To keep a copy, go to Settings, then Save a backup, and save the file to iCloud Drive or Files.
+Yes, if you use iCloud. The app backs up your progress, notes, stars, and scores to your own iCloud once a day and when you leave the app (only you can see it). Reinstall the app and it offers to restore the backup. Without iCloud, go to Settings, then Save a backup, and keep the file in Files.
 
 **How do I move my progress to a new phone?**
-On your old phone, go to Settings, then Save a backup, and save it to iCloud Drive. On the new phone, install Ribbon Prep, then go to Settings, then Restore from a backup, and choose that file.
+If both phones use the same iCloud account, install Ribbon Prep on the new phone and tap Restore when it offers your iCloud backup (or go to Settings, then Restore from iCloud). Without iCloud: on your old phone, go to Settings, then Save a backup; on the new phone, go to Settings, then Restore from a backup, and choose that file.
 
 **Where do the questions come from?**
 They are original questions written for this app, each with a rationale and, where possible, a link to an official source such as NCI, FDA drug labels, or national guidelines. Questions marked **Draft** have not yet been reviewed by an oncology nurse.
