@@ -8,7 +8,7 @@ permalink: /privacy/
 
 Ribbon Prep ("the app") is an independent study aid for people preparing for the Oncology Certified Nurse (OCN) exam. It is made by the Ribbon Prep developer. It is not affiliated with or endorsed by the Oncology Nursing Certification Corporation (ONCC).
 
-**The short version:** the app has no accounts and no tracking. What you enter (your name, answers, notes) stays on your phone unless you choose to send or save it somewhere. The app sends anonymous usage counts, such as which screens are opened, that can't be tied to you; you can turn this off in Settings. The developer does not sell any information.
+**The short version:** the app has no accounts and no cross-app tracking. What you enter (your name, answers, notes) stays on your phone unless you choose to send or save it somewhere. The app sends anonymous usage counts, such as which screens are opened, that can't be tied to you; you can turn this off in Settings. The developer does not sell any information.
 
 ## What the app stores on your phone
 
