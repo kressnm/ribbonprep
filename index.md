@@ -36,7 +36,7 @@ Settings, then switch off Daily study reminder. You can also turn off notificati
 Settings, then Reset practice progress. Your notes and stars are kept.
 
 **Does the app cost anything or show ads?**
-Ribbon Prep is free to download, with an optional one-time Pro upgrade. There are no ads and no tracking.
+Ribbon Prep is free to download, with an optional one-time Pro upgrade. There are no ads, and the app doesn't track you across other apps or websites. It does send anonymous usage data, such as which screens are opened, to help improve the app. This is on by default, and you can turn it off in Settings, under Preferences, Share anonymous usage. See the [Privacy Policy](privacy/) for details.
 
 ## Privacy
 
