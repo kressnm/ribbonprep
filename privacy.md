@@ -4,7 +4,7 @@ title: Privacy Policy
 permalink: /privacy/
 ---
 
-**Last updated: November 22, 2026**
+**Last updated: November 23, 2026**
 
 Ribbon Prep ("the app") is an independent study aid for people preparing for the Oncology Certified Nurse (OCN) exam. It is made by the Ribbon Prep developer. It is not affiliated with or endorsed by the Oncology Nursing Certification Corporation (ONCC).
 
@@ -36,7 +36,7 @@ None of this is sent to the developer or to anyone else. Deleting the app delete
 
 To learn which parts of the app are useful, the app sends anonymous usage data to TelemetryDeck, a privacy-focused analytics service (telemetrydeck.com). It is on by default, and you can turn it off at any time in Settings, under Preferences, Share anonymous usage.
 
-- **What is sent:** which screens are opened; a few actions, such as starting, pausing, or finishing a practice exam (with its score, length, and time used), answering the Question of the Day, or saving a backup; whether Pro is unlocked; and the app version, iOS version, device model, and language.
+- **What is sent:** which screens are opened; a few actions, such as starting, pausing, or finishing a practice exam (with its score, length, and time used), answering the Question of the Day, or saving a backup; and the app version, iOS version, device model, and language.
 - **What is never sent:** your name, exam date, answers to questions, notes, search text, or anything you type.
 - **How it stays anonymous:** the app creates a random ID on your phone (not your device's identifier or your Apple account) and scrambles it with a one-way hash before sending, so events can't be linked to you or your device. TelemetryDeck hashes it again on their side. The data is not used for advertising and is not sold or shared.
 
@@ -53,7 +53,7 @@ During a practice exam, a countdown can appear on your Lock Screen and in the Dy
 - **Backups:** Settings, then Save a backup, creates a file with your progress, notes, stars, scores, and settings. It is saved wherever you choose, such as iCloud Drive or Files on your phone. If you save it to iCloud Drive, Apple's terms for iCloud apply. The developer never receives it.
 - **Reporting a problem or suggesting an idea:** the app prepares an email (or a share sheet). It is sent only if you choose to send it, from your own email app. It contains the question or card you are reporting and anything you write. It is used only to fix errors and improve the app.
 - **Links:** source and reference links open official websites (for example ONCC, NCI, and FDA) in your browser. Those sites have their own privacy policies.
-- **Purchases, ratings, and sharing:** buying the optional Pro upgrade, rating the app, and sharing it all happen through Apple's standard screens. The developer does not receive your payment details.
+- **Ratings and sharing:** rating the app and sharing it happen through Apple's standard screens.
 
 ## Apple
 
