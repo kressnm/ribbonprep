@@ -1,0 +1,1005 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Ribbon Prep Review</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0A5BD3">
+<!--
+  Ribbon Prep review page.
+  This page holds no questions. After the reviewer connects her GitHub key it reads the questions, flashcards and
+  source quotes from the private repo (kressnm/Ribbon-Prep) and saves her decisions to
+  Content/reviews/<her GitHub name>.json on the "reviews" branch there. A GitHub Action
+  (.github/workflows/apply-reviews.yml) turns those into a pull request for Nick.
+  The item fingerprint below must match fingerprint() in Tools/apply_reviews.py.
+-->
+<style>
+:root {
+  --brand: #0A5BD3; --brand-ink: #fff; --brand-soft: #E6EEFB;
+  --bg: #F7F9FD; --panel: #FFFFFF; --panel-2: #F1F4FA; --line: #D9E1EE;
+  --ink: #111827; --ink-2: #4B5563; --ink-3: #6B7280;
+  --good: #11803D; --good-soft: #E3F5EA; --good-line: #9AD7B1;
+  --warn: #9A5B00; --warn-soft: #FFF3DC; --warn-line: #F1C470;
+  --bad: #B42318; --bad-soft: #FDECEA;
+  --violet: #6D3FC0; --violet-soft: #F0EAFB;
+  --mark: #FFE58A;
+  --shadow: 0 1px 2px rgba(16,24,40,.06), 0 2px 8px rgba(16,24,40,.06);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --brand: #4C8DFF; --brand-ink: #06122B; --brand-soft: #16264A;
+    --bg: #0B0F17; --panel: #141A26; --panel-2: #1B2232; --line: #2A3345;
+    --ink: #EEF2F8; --ink-2: #B7C0CF; --ink-3: #8E99AB;
+    --good: #5FD08D; --good-soft: #10291B; --good-line: #2C6B45;
+    --warn: #F3BC5A; --warn-soft: #2D2210; --warn-line: #6E5320;
+    --bad: #FF8A80; --bad-soft: #351614;
+    --violet: #B79BF2; --violet-soft: #241B3A;
+    --mark: #6A5714;
+    --shadow: 0 1px 2px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"] {
+  --brand: #4C8DFF; --brand-ink: #06122B; --brand-soft: #16264A;
+  --bg: #0B0F17; --panel: #141A26; --panel-2: #1B2232; --line: #2A3345;
+  --ink: #EEF2F8; --ink-2: #B7C0CF; --ink-3: #8E99AB;
+  --good: #5FD08D; --good-soft: #10291B; --good-line: #2C6B45;
+  --warn: #F3BC5A; --warn-soft: #2D2210; --warn-line: #6E5320;
+  --bad: #FF8A80; --bad-soft: #351614;
+  --violet: #B79BF2; --violet-soft: #241B3A;
+  --mark: #6A5714;
+  --shadow: 0 1px 2px rgba(0,0,0,.4);
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 16px/1.5 "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+a { color: var(--brand); }
+.hidden { display: none !important; }
+
+/* ---------- layout ---------- */
+#app { display: grid; grid-template-rows: auto 1fr auto; height: 100vh; height: 100dvh; }
+header.top {
+  display: flex; align-items: center; gap: 12px; padding: 10px 16px;
+  background: var(--panel); border-bottom: 1px solid var(--line);
+}
+.logo { display: flex; align-items: center; gap: 10px; font-weight: 650; font-size: 18px; white-space: nowrap; }
+.logo svg { width: 28px; height: 28px; }
+.progress-wrap { flex: 1; min-width: 120px; max-width: 420px; margin-left: 8px; }
+.progress-label { font-size: 13px; color: var(--ink-2); display: flex; justify-content: space-between; gap: 8px; }
+.bar { height: 8px; border-radius: 99px; background: var(--panel-2); overflow: hidden; border: 1px solid var(--line); }
+.bar > span { display: block; height: 100%; background: var(--good); border-radius: 99px; transition: width .3s; }
+.spacer { flex: 1; }
+.sync { font-size: 13px; color: var(--ink-2); display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--good); flex: none; }
+.sync.pending .dot { background: var(--warn); }
+.sync.error .dot { background: var(--bad); }
+.icon-btn {
+  border: 1px solid var(--line); background: var(--panel); border-radius: 10px; min-height: 44px; min-width: 44px;
+  padding: 0 12px; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+}
+.icon-btn:hover { background: var(--panel-2); }
+
+.body { display: grid; grid-template-columns: 320px 1fr; min-height: 0; }
+aside.list {
+  border-right: 1px solid var(--line); background: var(--panel); display: flex; flex-direction: column; min-height: 0;
+}
+.filters { padding: 12px; display: grid; gap: 8px; border-bottom: 1px solid var(--line); }
+.filters input, .filters select {
+  width: 100%; min-height: 44px; border: 1px solid var(--line); border-radius: 10px; padding: 0 12px; background: var(--bg);
+}
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.seg button { border: 0; background: var(--bg); min-height: 40px; font-size: 14px; }
+.seg button + button { border-left: 1px solid var(--line); }
+.seg button[aria-pressed="true"] { background: var(--brand); color: var(--brand-ink); font-weight: 600; }
+.count { font-size: 13px; color: var(--ink-3); padding: 2px 2px 0; }
+#rows { overflow-y: auto; flex: 1; padding: 4px 0; overscroll-behavior: contain; }
+.row {
+  display: grid; grid-template-columns: 12px 1fr; gap: 10px; align-items: start; width: 100%; text-align: left;
+  border: 0; background: none; padding: 10px 14px; border-left: 3px solid transparent;
+}
+.row:hover { background: var(--panel-2); }
+.row.current { background: var(--brand-soft); border-left-color: var(--brand); }
+.row .sdot { width: 10px; height: 10px; border-radius: 50%; margin-top: 6px; border: 2px solid var(--ink-3); }
+.row .meta { font-size: 12px; color: var(--ink-3); }
+.row .txt { font-size: 14px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.s-approve .sdot, .s-insheet .sdot { background: var(--good); border-color: var(--good); }
+.s-edit .sdot { background: var(--brand); border-color: var(--brand); }
+.s-changes .sdot { background: var(--warn); border-color: var(--warn); }
+.s-discuss .sdot { background: var(--violet); border-color: var(--violet); }
+.s-remove .sdot { background: var(--bad); border-color: var(--bad); }
+.s-stale .sdot { border-color: var(--warn); border-style: dashed; }
+
+main.work { overflow-y: auto; min-height: 0; padding: 20px; overscroll-behavior: contain; }
+.columns { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 20px; max-width: 1500px; margin: 0 auto; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); }
+.card + .card { margin-top: 16px; }
+.eyebrow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 12px; }
+.chip { font-size: 13px; padding: 3px 10px; border-radius: 99px; background: var(--panel-2); border: 1px solid var(--line); color: var(--ink-2); white-space: nowrap; }
+.chip.id { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--ink); }
+.chip.st-approve, .chip.st-insheet { background: var(--good-soft); border-color: var(--good-line); color: var(--good); }
+.chip.st-edit { background: var(--brand-soft); color: var(--brand); border-color: var(--brand); }
+.chip.st-changes, .chip.st-stale { background: var(--warn-soft); border-color: var(--warn-line); color: var(--warn); }
+.chip.st-discuss { background: var(--violet-soft); color: var(--violet); border-color: var(--violet); }
+.chip.st-remove { background: var(--bad-soft); color: var(--bad); border-color: var(--bad); }
+h2.stem { font-size: 21px; line-height: 1.45; font-weight: 600; margin: 0 0 16px; }
+.label { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); font-weight: 650; margin: 18px 0 6px; }
+.opts { display: grid; gap: 8px; }
+.opt { display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start; padding: 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); }
+.opt .L { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-weight: 650; background: var(--panel-2); border: 1px solid var(--line); }
+.opt.correct { background: var(--good-soft); border-color: var(--good-line); }
+.opt.correct .L { background: var(--good); color: #fff; border-color: var(--good); }
+.opt .ok { display: block; font-size: 13px; color: var(--good); font-weight: 650; }
+.rationale { white-space: pre-wrap; }
+.flash { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; background: var(--bg); white-space: pre-wrap; }
+.flash.front { font-size: 19px; font-weight: 600; }
+
+.banner { border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; border: 1px solid; display: flex; gap: 12px; align-items: flex-start; }
+.banner .grow { flex: 1; }
+.banner.good { background: var(--good-soft); border-color: var(--good-line); }
+.banner.warn { background: var(--warn-soft); border-color: var(--warn-line); }
+.banner.info { background: var(--brand-soft); border-color: var(--brand); }
+.banner.violet { background: var(--violet-soft); border-color: var(--violet); }
+.banner.bad { background: var(--bad-soft); border-color: var(--bad); }
+.banner p { margin: 2px 0 0; color: var(--ink-2); white-space: pre-wrap; }
+
+.src-name { font-weight: 650; font-size: 17px; }
+.src-host { color: var(--ink-3); font-size: 14px; word-break: break-all; }
+.open-src { margin-top: 12px; width: 100%; }
+blockquote.q {
+  margin: 0 0 10px; padding: 12px 14px; border-left: 4px solid var(--brand); background: var(--bg);
+  border-radius: 0 10px 10px 0; white-space: pre-wrap;
+}
+blockquote.q mark { background: var(--mark); color: inherit; padding: 0 2px; border-radius: 3px; }
+.muted { color: var(--ink-3); }
+.notes { margin: 0; padding-left: 20px; }
+.notes li + li { margin-top: 6px; }
+.small { font-size: 14px; }
+
+/* ---------- action bar ---------- */
+footer.actions {
+  background: var(--panel); border-top: 1px solid var(--line); padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+  display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap;
+}
+.btn {
+  min-height: 52px; padding: 0 18px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel-2);
+  font-weight: 600; display: inline-flex; align-items: center; gap: 8px; justify-content: center;
+}
+.btn:hover { filter: brightness(.97); }
+.btn kbd { font: 12px/1 ui-monospace, Consolas, monospace; padding: 3px 5px; border-radius: 5px; border: 1px solid currentColor; opacity: .6; }
+.btn.primary { background: var(--good); color: #fff; border-color: var(--good); min-width: 170px; font-size: 17px; }
+.btn.blue { background: var(--brand); color: var(--brand-ink); border-color: var(--brand); }
+.btn.warn { color: var(--warn); border-color: var(--warn-line); background: var(--warn-soft); }
+.btn.violet { color: var(--violet); border-color: var(--violet); background: var(--violet-soft); }
+.btn.bad { color: var(--bad); border-color: var(--bad); background: var(--bad-soft); }
+.btn.ghost { background: transparent; }
+.btn[disabled] { opacity: .45; cursor: default; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn.primary { color: #06200F; } }
+:root[data-theme="dark"] .btn.primary { color: #06200F; }
+
+/* ---------- edit form ---------- */
+.field { margin-bottom: 14px; }
+.field > label { display: block; font-size: 13px; font-weight: 650; color: var(--ink-2); margin-bottom: 4px; }
+.field textarea, .field input, .field select {
+  width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--bg); min-height: 44px;
+}
+.field textarea { resize: vertical; line-height: 1.5; }
+.field.changed textarea, .field.changed input, .field.changed select { border-color: var(--brand); box-shadow: 0 0 0 2px var(--brand-soft); }
+.was { font-size: 13px; color: var(--ink-3); margin-top: 4px; white-space: pre-wrap; }
+.was b { color: var(--ink-2); }
+.opt-edit { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start; }
+.opt-edit .radio { display: flex; align-items: center; gap: 6px; min-height: 44px; font-weight: 650; }
+.opt-edit .radio input { width: 22px; height: 22px; accent-color: var(--good); }
+details summary { cursor: pointer; color: var(--ink-2); min-height: 36px; display: flex; align-items: center; }
+
+/* ---------- dialogs / overlays ---------- */
+.scrim { position: fixed; inset: 0; background: rgba(5,8,15,.45); display: grid; place-items: center; padding: 16px; z-index: 50; }
+.dialog { background: var(--panel); border-radius: 18px; width: min(620px, 100%); max-height: 90vh; overflow: auto; padding: 22px; box-shadow: 0 20px 60px rgba(0,0,0,.3); }
+.dialog h3 { margin: 0 0 6px; font-size: 20px; }
+.dialog textarea { width: 100%; min-height: 140px; border: 1px solid var(--line); border-radius: 12px; padding: 12px; background: var(--bg); line-height: 1.5; }
+.quick { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.quick button { border: 1px solid var(--line); background: var(--bg); border-radius: 99px; padding: 8px 14px; min-height: 40px; font-size: 14px; }
+.dialog .row-btns { display: flex; gap: 10px; justify-content: flex-end; margin-top: 14px; flex-wrap: wrap; }
+.toast {
+  position: fixed; left: 50%; bottom: 96px; transform: translateX(-50%); background: var(--ink); color: var(--bg);
+  padding: 10px 12px 10px 16px; border-radius: 12px; display: flex; gap: 12px; align-items: center; z-index: 60; box-shadow: 0 8px 30px rgba(0,0,0,.25);
+  max-width: calc(100vw - 32px);
+}
+.toast button { background: transparent; border: 1px solid currentColor; color: inherit; border-radius: 8px; min-height: 36px; padding: 0 12px; }
+
+/* ---------- setup ---------- */
+.setup { max-width: 640px; margin: 6vh auto; padding: 0 16px; }
+.setup .card { padding: 28px; }
+.setup h1 { margin: 0 0 6px; font-size: 26px; }
+.setup ol { padding-left: 22px; }
+.setup ol li { margin-bottom: 10px; }
+.setup input { width: 100%; min-height: 48px; border: 1px solid var(--line); border-radius: 12px; padding: 0 14px; background: var(--bg); font-family: ui-monospace, Consolas, monospace; }
+.err { color: var(--bad); margin-top: 10px; white-space: pre-wrap; }
+.center { display: grid; place-items: center; height: 100%; color: var(--ink-2); padding: 20px; text-align: center; }
+
+.menu { position: absolute; right: 16px; top: 62px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,.18); padding: 6px; z-index: 40; min-width: 260px; }
+.menu button { display: block; width: 100%; text-align: left; border: 0; background: none; padding: 12px 14px; border-radius: 10px; min-height: 44px; }
+.menu button:hover { background: var(--panel-2); }
+.menu .who { padding: 10px 14px; font-size: 13px; color: var(--ink-3); border-bottom: 1px solid var(--line); margin-bottom: 4px; }
+
+/* ---------- smaller screens (Surface in portrait, split screen) ---------- */
+#listToggle { display: none; }
+@media (max-width: 1180px) {
+  .columns { grid-template-columns: 1fr; }
+}
+@media (max-width: 960px) {
+  .body { grid-template-columns: 1fr; }
+  aside.list { position: fixed; z-index: 30; top: 0; bottom: 0; left: 0; width: min(360px, 88vw); box-shadow: 0 0 40px rgba(0,0,0,.25); transform: translateX(-105%); transition: transform .2s; }
+  aside.list.open { transform: none; }
+  #listToggle { display: inline-flex; }
+  .progress-wrap { display: none; }
+}
+@media (max-width: 640px) {
+  main.work { padding: 12px; }
+  .card { padding: 16px; }
+  .btn { padding: 0 12px; min-height: 48px; }
+  .btn kbd, .sync .txt { display: none; }
+  .btn.primary { min-width: 0; flex: 1 1 100%; }
+  .logo span { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="setup" class="setup hidden">
+  <div class="card">
+    <div class="logo" style="margin-bottom:14px"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ribbon"/></svg><span>Ribbon Prep Review</span></div>
+    <h1>Connect to GitHub</h1>
+    <p class="muted">This is a one-time step. It lets this page read the draft questions from Nick's private project and save your decisions back to it. The questions are never shown publicly.</p>
+    <ol>
+      <li>Make sure you're signed in to GitHub in this browser, and that you've accepted Nick's invitation to the <b>Ribbon-Prep</b> project.</li>
+      <li><a id="tokenLink" href="https://github.com/settings/tokens/new?scopes=repo&amp;description=Ribbon%20Prep%20review" target="_blank" rel="noopener">Open GitHub's “new key” page</a>. The name and the <b>repo</b> box are already filled in.</li>
+      <li>Under <b>Expiration</b>, choose <b>No expiration</b> (or 1 year). Scroll down and click the green <b>Generate token</b> button.</li>
+      <li>Click the copy button next to the key that starts with <code>ghp_</code>, then paste it here:</li>
+    </ol>
+    <input id="tokenInput" type="password" autocomplete="off" spellcheck="false" placeholder="ghp_…" aria-label="GitHub key">
+    <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+      <button class="btn blue" id="connectBtn" style="flex:1">Connect</button>
+    </div>
+    <div class="err" id="setupErr" role="alert"></div>
+    <p class="muted small" style="margin-top:16px">The key is saved only in this browser on this device. Signing out (menu ⋯, top right) removes it.</p>
+  </div>
+</div>
+
+<div id="loading" class="center"><div><div class="logo" style="justify-content:center;margin-bottom:10px"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ribbon"/></svg></div><div id="loadingText">Loading…</div></div></div>
+
+<div id="app" class="hidden">
+  <header class="top">
+    <button class="icon-btn" id="listToggle" aria-label="Show list">☰ List</button>
+    <div class="logo"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ribbon"/></svg><span>Ribbon Prep Review</span></div>
+    <div class="progress-wrap" aria-live="polite">
+      <div class="progress-label"><span id="progText"></span><span id="progPct"></span></div>
+      <div class="bar"><span id="progBar" style="width:0"></span></div>
+    </div>
+    <div class="spacer"></div>
+    <div class="sync" id="sync" role="status"><span class="dot"></span><span class="txt" id="syncText">Saved</span></div>
+    <button class="icon-btn" id="menuBtn" aria-label="Menu" aria-haspopup="true">⋯</button>
+  </header>
+
+  <div class="body">
+    <aside class="list" id="list" aria-label="Questions and flashcards">
+      <div class="filters">
+        <input id="search" type="search" placeholder="Search words or ID (press /)" aria-label="Search">
+        <div class="seg" role="group" aria-label="Type">
+          <button data-kind="all" aria-pressed="true">All</button>
+          <button data-kind="question" aria-pressed="false">Questions</button>
+          <button data-kind="flashcard" aria-pressed="false">Flashcards</button>
+        </div>
+        <select id="areaSel" aria-label="Area"><option value="">All areas</option></select>
+        <select id="statusSel" aria-label="Status">
+          <option value="todo">To review</option>
+          <option value="all">Everything</option>
+          <option value="approve">Approved</option>
+          <option value="edit">Approved with my edits</option>
+          <option value="changes">Needs changes</option>
+          <option value="discuss">To discuss</option>
+          <option value="remove">Remove</option>
+          <option value="done">Already marked Reviewed in the app</option>
+        </select>
+        <div class="count" id="count"></div>
+      </div>
+      <div id="rows" role="list"></div>
+    </aside>
+
+    <main class="work" id="work" tabindex="-1"></main>
+  </div>
+
+  <footer class="actions" id="actions">
+    <button class="btn ghost" id="prevBtn" title="Previous (←)">← <span>Back</span></button>
+    <button class="btn primary" id="approveBtn">✓ Approve <kbd>A</kbd></button>
+    <button class="btn blue" id="editBtn">✎ Edit <kbd>E</kbd></button>
+    <button class="btn warn" id="changesBtn">Needs changes <kbd>C</kbd></button>
+    <button class="btn violet" id="discussBtn">Discuss <kbd>D</kbd></button>
+    <button class="btn bad" id="removeBtn">Remove <kbd>R</kbd></button>
+    <button class="btn ghost" id="nextBtn" title="Next (→)"><span>Skip</span> →</button>
+  </footer>
+</div>
+
+<div id="menu" class="menu hidden" role="menu">
+  <div class="who" id="who"></div>
+  <button id="saveNow" role="menuitem">Save to GitHub now</button>
+  <button id="helpBtn" role="menuitem">How this works</button>
+  <button id="themeBtn" role="menuitem">Appearance: match Windows</button>
+  <button id="signOut" role="menuitem">Sign out on this device</button>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="ribbon" viewBox="0 0 64 64">
+    <rect width="64" height="64" rx="14" fill="#0A5BD3"/>
+    <path d="M32 10c-7 0-11 5-11 11 0 5 3 10 6 14l-9 15 7 4 7-12 7 12 7-4-9-15c3-4 6-9 6-14 0-6-4-11-11-11zm0 7c3 0 5 2 5 5 0 3-2 6-5 9-3-3-5-6-5-9 0-3 2-5 5-5z" fill="#C9B6F2"/>
+  </symbol>
+</svg>
+
+<script>
+"use strict";
+const OWNER = "kressnm", REPO = "Ribbon-Prep", MAIN = "main", BRANCH = "reviews";
+const API = "https://api.github.com";
+const AREAS = ["Care Continuum", "Oncology Nursing Practice", "Treatment Modalities",
+  "Symptom Management and Palliative Care", "Oncologic Emergencies", "Psychosocial Dimensions of Care"];
+// Must match FIELDS in Tools/apply_reviews.py
+const FIELDS = {
+  question: ["Area", "Question", "A", "B", "C", "D", "E", "F", "Correct", "Rationale", "Source", "Source URL"],
+  flashcard: ["Area", "Front", "Back", "Source", "Source URL"],
+};
+const LETTERS = ["A", "B", "C", "D", "E", "F"];
+const DECISION_TEXT = {
+  approve: "Approved", edit: "Approved with your edits", changes: "Needs changes", discuss: "To discuss",
+  remove: "Marked for removal", insheet: "Reviewed (already in the app)", stale: "Changed since your review", todo: "To review",
+};
+const SAVE_DELAY = 20000;
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const store = {
+  get(k, fallback = null) { try { const v = localStorage.getItem(k); return v == null ? fallback : JSON.parse(v); } catch { return fallback; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+  del(k) { try { localStorage.removeItem(k); } catch {} },
+};
+
+const S = {
+  token: null, user: null, items: [], byId: new Map(), evidence: {}, sources: {},
+  reviews: { items: {} }, remoteSha: null, dirty: false, syncing: false, saveTimer: null, lastSaved: null, syncError: null,
+  filter: { kind: "all", area: "", status: "todo", q: "" }, visible: [], current: null, editing: false,
+};
+
+/* ---------------- GitHub ---------------- */
+async function gh(path, opts = {}) {
+  const headers = Object.assign({
+    Authorization: "Bearer " + S.token, Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28",
+  }, opts.headers || {});
+  const res = await fetch(API + path, Object.assign({}, opts, { headers, cache: "no-store" }));
+  if (res.status === 404 && opts.allow404) return null;
+  if (!res.ok) {
+    let detail = ""; try { detail = (await res.json()).message || ""; } catch {}
+    const e = new Error(detail || ("GitHub said " + res.status)); e.status = res.status; throw e;
+  }
+  if (opts.raw) return res.text();
+  return res.status === 204 ? null : res.json();
+}
+const repoPath = (p) => `/repos/${OWNER}/${REPO}${p}`;
+const rawFile = (path, ref) => gh(repoPath(`/contents/${encodeURI(path)}?ref=${ref}`), { raw: true, allow404: true, headers: { Accept: "application/vnd.github.raw+json" } });
+
+function b64ToText(b64) {
+  const bin = atob(b64.replace(/\s/g, "")); const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+}
+function textToB64(text) {
+  const bytes = new TextEncoder().encode(text); let bin = "";
+  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  return btoa(bin);
+}
+
+/* ---------------- data ---------------- */
+function parseCSV(text) {
+  if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+  const rows = []; let row = [], cell = "", i = 0, q = false;
+  while (i < text.length) {
+    const c = text[i];
+    if (q) {
+      if (c === '"') { if (text[i + 1] === '"') { cell += '"'; i += 2; continue; } q = false; i++; continue; }
+      cell += c; i++; continue;
+    }
+    if (c === '"') { q = true; i++; continue; }
+    if (c === ",") { row.push(cell); cell = ""; i++; continue; }
+    if (c === "\r" && text[i + 1] === "\n") { i++; continue; }
+    if (c === "\n" || c === "\r") { row.push(cell); rows.push(row); row = []; cell = ""; i++; continue; }
+    cell += c; i++;
+  }
+  if (cell !== "" || row.length) { row.push(cell); rows.push(row); }
+  return rows.filter((r) => r.some((x) => x.trim() !== ""));
+}
+
+async function fingerprint(kind, values) {
+  const parts = FIELDS[kind].map((n) => (values[n] || "").replace(/\r\n/g, "\n"));
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(JSON.stringify(parts)));
+  return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("").slice(0, 16);
+}
+
+async function buildItems(csvText, kind) {
+  const rows = parseCSV(csvText); const header = rows[0].map((h) => h.trim()); const out = [];
+  for (const r of rows.slice(1)) {
+    const v = {}; header.forEach((h, i) => (v[h] = r[i] ?? ""));
+    if (!v.ID) continue;
+    const item = { id: v.ID.trim(), kind, values: v, reviewed: /^(yes|y|true)$/i.test((v.Reviewed || "").trim()) };
+    item.hash = await fingerprint(kind, v);
+    item.text = kind === "question" ? v.Question : v.Front;
+    item.search = (item.id + " " + FIELDS[kind].map((n) => v[n] || "").join(" ")).toLowerCase();
+    out.push(item);
+  }
+  return out;
+}
+
+function statusOf(item) {
+  const r = S.reviews.items[item.id];
+  if (r && r.decision && r.decision !== "cleared") {
+    if (r.base === item.hash || r.result === item.hash) return r.decision;
+    return "stale";
+  }
+  return item.reviewed ? "insheet" : "todo";
+}
+const isDone = (st) => ["approve", "edit", "remove", "insheet"].includes(st);
+
+/* ---------------- load ---------------- */
+async function start() {
+  S.token = store.get("rp.token");
+  if (!S.token) return showSetup();
+  show("loading"); $("loadingText").textContent = "Connecting to GitHub…";
+  try {
+    S.user = await gh("/user");
+    const repo = await gh(repoPath(""), { allow404: true });
+    if (!repo) throw Object.assign(new Error("norepo"), { status: 404 });
+    if (!repo.permissions || !repo.permissions.push) throw Object.assign(new Error("readonly"), { status: 403 });
+  } catch (e) {
+    if (e.status === 401) { store.del("rp.token"); return showSetup("That key didn't work (it may have expired or been deleted). Please make a new one."); }
+    if (e.message === "norepo") return showSetup("Your GitHub account can't see the Ribbon-Prep project yet. Ask Nick to invite you (GitHub, Ribbon-Prep, Settings, Collaborators), accept the invitation from your email, then try again.");
+    if (e.message === "readonly") return showSetup("Your account can see the project but can't save to it. Ask Nick to give you Write access.");
+    return showError("Couldn't reach GitHub. Check the internet connection and reload the page.\n\n(" + e.message + ")");
+  }
+  $("loadingText").textContent = "Loading questions and flashcards…";
+  try {
+    const [qcsv, fcsv, ev, state] = await Promise.all([
+      rawFile("Content/questions.csv", MAIN), rawFile("Content/flashcards.csv", MAIN),
+      rawFile("Content/review/evidence.json", MAIN), rawFile("Content/source_state.json", MAIN),
+    ]);
+    S.items = [...(await buildItems(qcsv, "question")), ...(await buildItems(fcsv, "flashcard"))];
+    S.byId = new Map(S.items.map((i) => [i.id, i]));
+    try { S.evidence = ev ? (JSON.parse(ev).items || {}) : {}; } catch { S.evidence = {}; }
+    try { S.sources = state ? JSON.parse(state) : {}; } catch { S.sources = {}; }
+    await loadReviews();
+  } catch (e) {
+    return showError("Couldn't load the questions from GitHub.\n\n(" + e.message + ")");
+  }
+  initUI();
+}
+
+function reviewFile() { return `Content/reviews/${S.user.login.toLowerCase()}.json`; }
+function localKey() { return "rp.reviews." + S.user.login.toLowerCase(); }
+
+function mergeInto(target, other) {
+  let changed = false;
+  for (const [id, r] of Object.entries(other.items || {})) {
+    const mine = target.items[id];
+    if (!mine || (r.at || "") > (mine.at || "")) { target.items[id] = r; changed = true; }
+  }
+  return changed;
+}
+
+async function fetchRemoteReviews() {
+  const meta = await gh(repoPath(`/contents/${encodeURI(reviewFile())}?ref=${BRANCH}`), { allow404: true });
+  if (!meta) return { sha: null, data: { items: {} } };
+  let text = meta.content ? b64ToText(meta.content) : await rawFile(reviewFile(), BRANCH);
+  let data; try { data = JSON.parse(text); } catch { data = { items: {} }; }
+  return { sha: meta.sha, data };
+}
+
+async function loadReviews() {
+  const local = store.get(localKey(), null);
+  let remote = { sha: null, data: { items: {} } };
+  try { remote = await fetchRemoteReviews(); } catch (e) { if (e.status !== 404) throw e; }
+  S.remoteSha = remote.sha;
+  S.reviews = { items: {} };
+  mergeInto(S.reviews, remote.data);
+  if (local && local.items) {
+    for (const [id, r] of Object.entries(local.items)) {
+      const theirs = S.reviews.items[id];
+      if (!theirs || (r.at || "") > (theirs.at || "")) { S.reviews.items[id] = r; S.dirty = true; }
+    }
+  }
+  if (store.get(localKey() + ".dirty", false)) S.dirty = true;
+  saveLocal();
+}
+
+function saveLocal() {
+  store.set(localKey(), S.reviews);
+  store.set(localKey() + ".dirty", S.dirty);
+}
+
+/* ---------------- saving to GitHub ---------------- */
+function scheduleSave(delay = SAVE_DELAY) {
+  clearTimeout(S.saveTimer);
+  S.saveTimer = setTimeout(syncNow, delay);
+  renderSync();
+}
+
+async function ensureBranch() {
+  const b = await gh(repoPath(`/branches/${BRANCH}`), { allow404: true });
+  if (b) return;
+  const main = await gh(repoPath(`/git/ref/heads/${MAIN}`));
+  await gh(repoPath("/git/refs"), { method: "POST", body: JSON.stringify({ ref: "refs/heads/" + BRANCH, sha: main.object.sha }) });
+}
+
+function summarize(items) {
+  const c = {}; for (const r of Object.values(items)) if (r.decision && r.decision !== "cleared") c[r.decision] = (c[r.decision] || 0) + 1;
+  return c;
+}
+
+async function syncNow() {
+  clearTimeout(S.saveTimer);
+  if (!S.dirty || !S.user) return renderSync();
+  if (S.syncing) { S.again = true; return; }
+  S.syncing = true; S.syncError = null; renderSync();
+  try {
+    await ensureBranch();
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const remote = await fetchRemoteReviews();
+      // Another device may have saved: keep the newest decision for each item.
+      const merged = { items: Object.assign({}, remote.data.items || {}) };
+      mergeInto(merged, S.reviews);
+      const c = summarize(merged.items);
+      const body = {
+        format: "Ribbon Prep reviews", version: 1,
+        reviewer: { login: S.user.login, name: S.user.name || S.user.login },
+        updated: new Date().toISOString(),
+        counts: c,
+        items: Object.fromEntries(Object.keys(merged.items).sort().map((k) => [k, merged.items[k]])),
+      };
+      const text = JSON.stringify(body, null, 1) + "\n";
+      const done = (c.approve || 0) + (c.edit || 0) + (c.remove || 0);
+      try {
+        const res = await gh(repoPath(`/contents/${encodeURI(reviewFile())}`), {
+          method: "PUT",
+          body: JSON.stringify({ message: `Review: ${done} done, ${(c.changes || 0) + (c.discuss || 0)} with comments`, content: textToB64(text), branch: BRANCH, ...(remote.sha ? { sha: remote.sha } : {}) }),
+        });
+        S.remoteSha = res.content.sha;
+        S.reviews = merged;
+        break;
+      } catch (e) {
+        if ((e.status === 409 || e.status === 422) && attempt < 2) continue;  // someone saved in between; try again
+        throw e;
+      }
+    }
+    S.dirty = false; S.lastSaved = new Date(); saveLocal();
+    renderList(); renderProgress();
+  } catch (e) {
+    S.syncError = e.status === 401 ? "GitHub key no longer works. Sign out and connect again." : "Not sent yet. Will try again in a minute.";
+    clearTimeout(S.saveTimer); S.saveTimer = setTimeout(syncNow, 60000);
+  } finally {
+    S.syncing = false; renderSync();
+    if (S.again) { S.again = false; syncNow(); }
+  }
+}
+
+function renderSync() {
+  const el = $("sync"), t = $("syncText");
+  el.classList.remove("pending", "error");
+  if (S.syncError) { el.classList.add("error"); t.textContent = S.syncError; }
+  else if (S.syncing) { el.classList.add("pending"); t.textContent = "Saving to GitHub…"; }
+  else if (S.dirty) { el.classList.add("pending"); t.textContent = navigator.onLine ? "Saved on this device · sending soon" : "Offline · saved on this device"; }
+  else t.textContent = S.lastSaved ? "Saved to GitHub " + S.lastSaved.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : "All saved to GitHub";
+}
+
+/* ---------------- decisions ---------------- */
+async function decide(item, decision, extra = {}) {
+  const prev = S.reviews.items[item.id] ? { ...S.reviews.items[item.id] } : null;
+  const r = { kind: item.kind, decision, base: item.hash, at: new Date().toISOString() };
+  if (extra.comment) r.comment = extra.comment;
+  if (decision === "edit") { r.edits = extra.edits; r.result = await fingerprint(item.kind, Object.assign({}, item.values, extra.edits)); }
+  else r.result = item.hash;
+  S.reviews.items[item.id] = r;
+  S.dirty = true; saveLocal(); scheduleSave();
+  renderProgress();
+  const label = { approve: "Approved", edit: "Edits saved and approved", changes: "Saved: needs changes", discuss: "Saved for discussion", remove: "Marked for removal" }[decision];
+  toast(label + " · " + item.id, () => {
+    if (prev) S.reviews.items[item.id] = prev; else S.reviews.items[item.id] = { decision: "cleared", at: new Date().toISOString(), base: item.hash };
+    S.dirty = true; saveLocal(); scheduleSave(); open(item.id); renderList(); renderProgress();
+  });
+  advance(item.id);
+}
+
+function advance(fromId) {
+  // Next item in the current list that still needs a look (the list keeps the one just decided until you move on).
+  computeVisible();
+  const ids = S.visible.map((i) => i.id);
+  const needs = (id) => S.filter.status !== "todo" || ["todo", "stale"].includes(statusOf(S.byId.get(id)));
+  const idx = ids.indexOf(fromId);
+  const next = ids.slice(idx + 1).find(needs) || ids.slice(0, Math.max(idx, 0)).find(needs);
+  if (next && next !== fromId) return open(next);
+  open(fromId);
+  if (S.filter.status === "todo") toast("Nothing left to review with these filters. 🎉");
+}
+
+/* ---------------- UI ---------------- */
+function show(which) {
+  for (const id of ["setup", "loading", "app"]) $(id).classList.toggle("hidden", id !== which);
+}
+function showSetup(err) { show("setup"); $("setupErr").textContent = err || ""; setTimeout(() => $("tokenInput").focus(), 50); }
+function showError(msg) { show("loading"); $("loadingText").innerHTML = esc(msg).replace(/\n/g, "<br>") + '<br><br><button class="btn blue" onclick="location.reload()">Try again</button>'; }
+
+function initUI() {
+  show("app");
+  const sel = $("areaSel");
+  AREAS.forEach((a) => sel.add(new Option(a, a)));
+  const saved = store.get("rp.filter"); if (saved) Object.assign(S.filter, saved);
+  $("search").value = S.filter.q; sel.value = S.filter.area; $("statusSel").value = S.filter.status;
+  document.querySelectorAll(".seg button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.kind === S.filter.kind)));
+  $("who").textContent = "Signed in as " + (S.user.name ? S.user.name + " (" + S.user.login + ")" : S.user.login);
+  applyTheme();
+  renderProgress(); renderSync();
+  computeVisible(); renderList();
+  const last = store.get("rp.current");
+  const first = (last && S.byId.has(last) && S.visible.find((i) => i.id === last)) ? last : (S.visible[0] || S.items[0] || {}).id;
+  if (first) open(first); else renderEmpty();
+  if (S.dirty) scheduleSave(3000);
+  if (!store.get("rp.helpSeen")) { showHelp(); store.set("rp.helpSeen", true); }
+}
+
+function computeVisible() {
+  const f = S.filter, q = f.q.trim().toLowerCase();
+  S.visible = S.items.filter((i) => {
+    if (f.kind !== "all" && i.kind !== f.kind) return false;
+    if (f.area && i.values.Area !== f.area) return false;
+    const st = statusOf(i);
+    if (f.status === "todo" && !(st === "todo" || st === "stale" || i.id === S.current)) return false;
+    if (f.status === "done" && st !== "insheet") return false;
+    if (!["todo", "all", "done"].includes(f.status) && st !== f.status) return false;
+    if (q && !q.split(/\s+/).every((w) => i.search.includes(w))) return false;
+    return true;
+  });
+  // Changed-since-review items first, then by ID (questions before flashcards).
+  S.visible.sort((a, b) => (statusOf(b) === "stale") - (statusOf(a) === "stale") || (a.kind === b.kind ? a.id.localeCompare(b.id) : a.kind === "question" ? -1 : 1));
+}
+
+function renderList() {
+  computeVisible();
+  const rows = $("rows");
+  const n = S.visible.length;
+  $("count").textContent = n === 0 ? "Nothing here" : n + (n === 1 ? " item" : " items");
+  rows.innerHTML = S.visible.map((i) => {
+    const st = statusOf(i);
+    return `<button class="row s-${st}${i.id === S.current ? " current" : ""}" data-id="${i.id}" role="listitem">
+      <span class="sdot" title="${esc(DECISION_TEXT[st])}"></span>
+      <span><span class="meta">${i.id} · ${esc(shortArea(i.values.Area))}${st !== "todo" ? " · " + esc(DECISION_TEXT[st]) : ""}</span>
+      <span class="txt">${esc(i.text)}</span></span></button>`;
+  }).join("");
+  const cur = rows.querySelector(".current"); if (cur) cur.scrollIntoView({ block: "nearest" });
+}
+const shortArea = (a) => ({ "Symptom Management and Palliative Care": "Symptom Mgmt", "Psychosocial Dimensions of Care": "Psychosocial", "Oncology Nursing Practice": "Nursing Practice" }[a] || a);
+
+function renderProgress() {
+  const total = S.items.length, done = S.items.filter((i) => isDone(statusOf(i))).length;
+  const comments = S.items.filter((i) => ["changes", "discuss"].includes(statusOf(i))).length;
+  $("progText").textContent = `${done} of ${total} reviewed` + (comments ? ` · ${comments} with comments` : "");
+  $("progPct").textContent = total ? Math.round((100 * done) / total) + "%" : "";
+  $("progBar").style.width = total ? (100 * done) / total + "%" : "0";
+}
+
+function renderEmpty() {
+  S.current = null;
+  $("work").innerHTML = `<div class="center"><div><h2>Nothing to show</h2><p>No items match these filters. Try “Everything” in the status menu, or clear the search.</p></div></div>`;
+  setActionsEnabled(false);
+}
+function setActionsEnabled(on) { document.querySelectorAll("#actions .btn").forEach((b) => { if (!["prevBtn", "nextBtn"].includes(b.id)) b.disabled = !on; }); }
+
+function open(id) {
+  const item = S.byId.get(id); if (!item) return renderEmpty();
+  S.current = id; S.editing = false; store.set("rp.current", id);
+  $("actions").classList.remove("hidden");
+  renderItem(item); renderList(); setActionsEnabled(true);
+  $("list").classList.remove("open");
+  $("work").scrollTop = 0;
+}
+
+function decisionBanner(item) {
+  const st = statusOf(item), r = S.reviews.items[item.id];
+  const when = r && r.at ? new Date(r.at).toLocaleDateString([], { month: "short", day: "numeric" }) : "";
+  const cmt = r && r.comment ? `<p>${esc(r.comment)}</p>` : "";
+  if (st === "stale") return `<div class="banner warn"><div class="grow"><b>This was changed after you reviewed it</b> (you chose “${esc(DECISION_TEXT[r.decision])}” on ${when}). Please look at it again.${cmt}</div></div>`;
+  if (st === "insheet") return `<div class="banner good"><div class="grow"><b>Already marked Reviewed in the app.</b> You can still approve, edit or comment.</div></div>`;
+  if (st === "todo") return "";
+  const cls = { approve: "good", edit: "info", changes: "warn", discuss: "violet", remove: "bad" }[st];
+  let edits = "";
+  if (st === "edit" && r.edits) edits = `<p>Changed: ${Object.keys(r.edits).map(esc).join(", ")}</p>`;
+  return `<div class="banner ${cls}"><div class="grow"><b>${esc(DECISION_TEXT[st])}</b> on ${when}.${edits}${cmt}<p class="small">Choose another button below to change your decision.</p></div></div>`;
+}
+
+function displayValues(item) {
+  const r = S.reviews.items[item.id];
+  if (r && r.decision === "edit" && r.edits && statusOf(item) === "edit" && r.base === item.hash) return Object.assign({}, item.values, r.edits);
+  return item.values;
+}
+
+function renderItem(item) {
+  const v = displayValues(item), st = statusOf(item);
+  let left;
+  if (item.kind === "question") {
+    const letters = LETTERS.filter((L) => (v[L] || "").trim());
+    left = `<h2 class="stem">${esc(v.Question)}</h2>
+      <div class="opts">${letters.map((L) => `<div class="opt${L === v.Correct.trim() ? " correct" : ""}"><span class="L">${L}</span><span>${L === v.Correct.trim() ? '<span class="ok">✓ Correct answer</span>' : ""}${esc(v[L])}</span></div>`).join("")}</div>
+      <div class="label">Rationale</div><div class="rationale">${esc(v.Rationale)}</div>`;
+  } else {
+    left = `<div class="label" style="margin-top:0">Front of card</div><div class="flash front">${esc(v.Front)}</div>
+      <div class="label">Back of card</div><div class="flash">${esc(v.Back)}</div>`;
+  }
+  $("work").innerHTML = `<div class="columns">
+    <section class="card" aria-label="Item">
+      <div class="eyebrow"><span class="chip id">${item.id}</span><span class="chip">${item.kind === "question" ? "Question" : "Flashcard"}</span><span class="chip">${esc(v.Area)}</span>${st !== "todo" ? `<span class="chip st-${st}">${esc(DECISION_TEXT[st])}</span>` : ""}</div>
+      ${decisionBanner(item)}
+      ${left}
+    </section>
+    <section aria-label="Source">${renderEvidence(item, v)}</section>
+  </div>`;
+  const ob = $("work").querySelector(".open-src");
+  if (ob) ob.addEventListener("click", () => window.open(ob.dataset.url, "ribbon-source"));
+}
+
+function highlight(text, marks) {
+  let html = esc(text);
+  for (const m of marks || []) {
+    const e = esc(m); if (!e) continue;
+    html = html.split(e).join("<mark>" + e + "</mark>");
+  }
+  return html;
+}
+
+function renderEvidence(item, v) {
+  const url = (v["Source URL"] || "").trim(), name = (v.Source || "").trim();
+  const ev = S.evidence[item.id] || {};
+  let host = ""; try { host = new URL(url).hostname.replace(/^www\./, ""); } catch {}
+  const state = S.sources[url];
+  let pageLine = "";
+  if (state && state.kind === "date") pageLine = `<div class="small muted" style="margin-top:6px">Page says: ${esc(state.value)} · checked ${esc(state.checked)}</div>`;
+  let html = `<div class="card"><div class="label" style="margin-top:0">Source</div>
+    ${name || url ? `<div class="src-name">${esc(name || host)}</div><div class="src-host">${esc(host)}</div>${pageLine}` : `<div class="muted">No source listed for this item.</div>`}
+    ${url ? `<button class="btn blue open-src" data-url="${esc(url)}">Open the source page ↗</button>
+      <div class="small muted" style="margin-top:6px">Opens in another Edge tab. Tip: drag that tab to the side of the screen to see both at once.</div>` : ""}
+  </div>`;
+  html += `<div class="card"><div class="label" style="margin-top:0">What the source says</div>`;
+  if (ev.quotes && ev.quotes.length) {
+    html += ev.quotes.map((q) => `<blockquote class="q">${highlight(q.text || q, q.marks)}</blockquote>`).join("");
+    if (ev.supports) html += `<div class="small muted">${esc(ev.supports)}</div>`;
+    if (ev.checked) html += `<div class="small muted">Quoted from the page on ${esc(ev.checked)}.</div>`;
+  } else if (ev.status === "manual") {
+    html += `<div class="banner warn" style="margin:0"><div class="grow"><b>Please check this one on the page.</b><p>${esc(ev.reason || "This website blocks automated reading, so no quote could be copied.")}</p></div></div>`;
+  } else if (ev.status === "not-found") {
+    html += `<div class="banner warn" style="margin:0"><div class="grow"><b>The page didn't state this directly.</b><p>${esc(ev.reason || "Please check it against a nursing reference.")}</p></div></div>`;
+  } else {
+    html += `<div class="muted">No quote collected yet. Use “Open the source page”.</div>`;
+  }
+  html += `</div>`;
+  const notes = ev.notes || [];
+  if (notes.length) {
+    html += `<div class="card"><div class="label" style="margin-top:0">Notes from the fact-check</div><ul class="notes">${notes.map((n) => `<li>${esc(n)}</li>`).join("")}</ul></div>`;
+  }
+  return html;
+}
+
+/* ---------------- edit mode ---------------- */
+function renderEdit(item) {
+  S.editing = true;
+  $("actions").classList.add("hidden");
+  const orig = item.values, v = displayValues(item);
+  const f = (name, label, rows = 3, input = false) => {
+    const val = v[name] || "";
+    return `<div class="field" data-field="${name}"><label for="f-${name}">${label}</label>
+      ${input ? `<input id="f-${name}" value="${esc(val)}">` : `<textarea id="f-${name}" rows="${rows}">${esc(val)}</textarea>`}
+      <div class="was hidden"><b>Was:</b> ${esc(orig[name] || "")}</div></div>`;
+  };
+  let body;
+  if (item.kind === "question") {
+    const letters = LETTERS.filter((L) => (orig[L] || "").trim() || L <= "D");
+    body = f("Question", "Question", 3) +
+      `<div class="label">Answers · choose the correct one</div>` +
+      letters.map((L) => `<div class="field opt-edit" data-field="${L}">
+        <label class="radio"><input type="radio" name="correct" value="${L}" ${v.Correct.trim() === L ? "checked" : ""} aria-label="${L} is correct">${L}</label>
+        <div><textarea id="f-${L}" rows="2" aria-label="Answer ${L}">${esc(v[L] || "")}</textarea><div class="was hidden"><b>Was:</b> ${esc(orig[L] || "")}</div></div></div>`).join("") +
+      `<div class="was hidden" id="correctWas"><b>Correct answer was:</b> ${esc(orig.Correct)}</div>` +
+      f("Rationale", "Rationale", 7) +
+      `<p class="small muted">Letters in the rationale (“A is wrong because…”) refer to the answers as listed here. The app shuffles answers and fixes the letters automatically.</p>`;
+  } else {
+    body = f("Front", "Front of card", 3) + f("Back", "Back of card", 6);
+  }
+  body += `<div class="field" data-field="Area"><label for="f-Area">Exam area</label><select id="f-Area">${AREAS.map((a) => `<option ${a === v.Area ? "selected" : ""}>${esc(a)}</option>`).join("")}</select><div class="was hidden"><b>Was:</b> ${esc(orig.Area)}</div></div>
+    <details><summary>Source name and link</summary>${f("Source", "Source name", 1, true)}${f("Source URL", "Source link", 1, true)}</details>
+    <div class="field"><label for="f-note">Note for Nick (optional)</label><textarea id="f-note" rows="2" placeholder="Why you changed it, if it helps"></textarea></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end">
+      <button class="btn ghost" id="cancelEdit">Cancel</button>
+      <button class="btn primary" id="saveEdit">✓ Save my edits and approve</button></div>`;
+  const col = $("work").querySelector(".columns > section");
+  col.innerHTML = `<div class="eyebrow"><span class="chip id">${item.id}</span><span class="chip st-edit">Editing</span></div>
+    <div class="banner info"><div class="grow">Change anything that needs it. Changed boxes turn blue and show the original underneath.</div></div>${body}`;
+  const refresh = () => {
+    col.querySelectorAll(".field[data-field]").forEach((el) => {
+      const name = el.dataset.field, input = col.querySelector("#f-" + CSS.escape(name));
+      if (!input) return;
+      const changed = input.value !== (orig[name] || "");
+      el.classList.toggle("changed", changed);
+      const was = el.querySelector(".was"); if (was) was.classList.toggle("hidden", !changed);
+    });
+    const c = col.querySelector('input[name="correct"]:checked');
+    $("correctWas") && $("correctWas").classList.toggle("hidden", !c || c.value === orig.Correct.trim());
+  };
+  col.addEventListener("input", refresh); col.addEventListener("change", refresh); refresh();
+  $("cancelEdit").onclick = () => open(item.id);
+  $("saveEdit").onclick = () => {
+    const edits = {};
+    const names = item.kind === "question" ? ["Question", ...LETTERS, "Rationale", "Area", "Source", "Source URL"] : ["Front", "Back", "Area", "Source", "Source URL"];
+    for (const n of names) {
+      const el = col.querySelector("#f-" + CSS.escape(n)); if (!el) continue;
+      const val = el.value.replace(/\r\n/g, "\n").trim();
+      if (val !== (orig[n] || "").trim()) edits[n] = val;
+    }
+    if (item.kind === "question") {
+      const c = col.querySelector('input[name="correct"]:checked');
+      if (c && c.value !== orig.Correct.trim()) edits.Correct = c.value;
+      const correct = edits.Correct || orig.Correct.trim();
+      const blank = ["A", "B", "C", "D"].filter((L) => !((L in edits ? edits[L] : orig[L]) || "").trim());
+      if (blank.length) return alert("Answer " + blank.join(", ") + " is empty. OCN questions have four answers.");
+      if (!((correct in edits ? edits[correct] : orig[correct]) || "").trim()) return alert("The correct answer can't be empty.");
+    }
+    if (["Question", "Front", "Back", "Rationale"].some((n) => n in edits && !edits[n])) return alert("That box can't be empty.");
+    const note = $("f-note").value.trim();
+    if (!Object.keys(edits).length) { decide(item, "approve", { comment: note }); return; }
+    decide(item, "edit", { edits, comment: note });
+  };
+  col.querySelector("textarea, input").focus();
+}
+
+/* ---------------- comment dialog ---------------- */
+const DIALOGS = {
+  changes: { title: "What needs to change?", help: "Describe the problem. Claude will draft a fix and it comes back to you to approve.", required: true, btn: "Save: needs changes", cls: "warn",
+    quick: ["The correct answer is wrong", "Two answers could be right", "The rationale is unclear", "Outdated practice", "Not how we do it in practice", "Wording is confusing", "Too easy", "Not OCN-level"] },
+  discuss: { title: "What would you like to discuss?", help: "For anything you're unsure about. Nick will see it in the list.", required: false, btn: "Save for discussion", cls: "violet",
+    quick: ["I'm not sure this is right", "Check with another reference", "Is this on the OCN outline?"] },
+  remove: { title: "Remove this item?", help: "It will be taken out of the app when Nick merges your review. Say why if you can.", required: false, btn: "Remove it", cls: "bad",
+    quick: ["Duplicate of another question", "Not relevant to the OCN", "Can't be fixed", "Too similar to a prep book"] },
+};
+function openDialog(item, kind) {
+  const d = DIALOGS[kind], prev = S.reviews.items[item.id];
+  const existing = prev && prev.decision === kind ? prev.comment || "" : "";
+  const scrim = document.createElement("div"); scrim.className = "scrim";
+  scrim.innerHTML = `<div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dlgT">
+    <h3 id="dlgT">${esc(d.title)}</h3><div class="muted small">${item.id} · ${esc(d.help)}</div>
+    <div class="quick">${d.quick.map((q) => `<button type="button">${esc(q)}</button>`).join("")}</div>
+    <textarea id="dlgText" placeholder="Type, dictate (Windows key + H), or write with the pen">${esc(existing)}</textarea>
+    <div class="err" id="dlgErr"></div>
+    <div class="row-btns"><button class="btn ghost" id="dlgCancel">Cancel</button><button class="btn ${d.cls}" id="dlgOk">${esc(d.btn)}</button></div></div>`;
+  document.body.appendChild(scrim);
+  const ta = scrim.querySelector("#dlgText"); ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length);
+  scrim.querySelectorAll(".quick button").forEach((b) => b.onclick = () => { ta.value = (ta.value.trim() ? ta.value.trim() + ". " : "") + b.textContent; ta.focus(); });
+  const close = () => { scrim.remove(); document.removeEventListener("keydown", onKey, true); };
+  const ok = () => {
+    const text = ta.value.trim();
+    if (d.required && !text) { scrim.querySelector("#dlgErr").textContent = "Please say what should change."; return; }
+    close(); decide(item, kind, { comment: text });
+  };
+  const onKey = (e) => { if (e.key === "Escape") { e.stopPropagation(); close(); } if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); ok(); } };
+  document.addEventListener("keydown", onKey, true);
+  scrim.querySelector("#dlgCancel").onclick = close;
+  scrim.querySelector("#dlgOk").onclick = ok;
+  scrim.addEventListener("click", (e) => { if (e.target === scrim) close(); });
+}
+
+function showHelp() {
+  const scrim = document.createElement("div"); scrim.className = "scrim";
+  scrim.innerHTML = `<div class="dialog" role="dialog" aria-modal="true" aria-labelledby="hT"><h3 id="hT">How this works</h3>
+    <ol>
+      <li>Each screen shows one draft question or flashcard on the left, and on the right <b>what the source says</b>, with the key words highlighted.</li>
+      <li>If it's right, tap <b>Approve</b>. The next one opens by itself.</li>
+      <li>Small fix? Tap <b>Edit</b>, change the words, then <b>Save my edits and approve</b>.</li>
+      <li>Bigger problem? <b>Needs changes</b> and say what's wrong. Not sure? <b>Discuss</b>. Shouldn't be in the app? <b>Remove</b>.</li>
+      <li>Everything saves by itself (top right shows when it reached GitHub). Nothing changes in the app until Nick merges your review.</li>
+      <li>Changed your mind? Open the item from the list and choose a different button. Status “Everything” shows all items.</li>
+    </ol>
+    <p class="small muted">Keyboard: A approve · E edit · C needs changes · D discuss · R remove · → skip · ← back · / search.<br>
+    To keep this as an app: Edge menu (…) → Apps → Install this site as an app.</p>
+    <div class="row-btns"><button class="btn blue" id="hOk">Got it</button></div></div>`;
+  document.body.appendChild(scrim);
+  scrim.querySelector("#hOk").onclick = () => scrim.remove();
+  scrim.addEventListener("click", (e) => { if (e.target === scrim) scrim.remove(); });
+}
+
+let toastTimer;
+function toast(text, undo) {
+  document.querySelectorAll(".toast").forEach((t) => t.remove());
+  const t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status");
+  t.innerHTML = `<span>${esc(text)}</span>${undo ? '<button type="button">Undo</button>' : ""}`;
+  t.style.bottom = ($("actions").offsetHeight || 72) + 16 + "px";
+  document.body.appendChild(t);
+  if (undo) t.querySelector("button").onclick = () => { t.remove(); undo(); };
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.remove(), 6000);
+}
+
+function step(dir) {
+  computeVisible();
+  const ids = S.visible.map((i) => i.id); let idx = ids.indexOf(S.current);
+  if (idx < 0) idx = dir > 0 ? -1 : ids.length;
+  const next = ids[idx + dir]; if (next) open(next);
+}
+
+function applyTheme() {
+  const t = store.get("rp.theme", "system");
+  if (t === "system") document.documentElement.removeAttribute("data-theme"); else document.documentElement.setAttribute("data-theme", t);
+  $("themeBtn").textContent = "Appearance: " + ({ system: "match Windows", light: "light", dark: "dark" }[t]);
+}
+
+/* ---------------- events ---------------- */
+$("connectBtn").onclick = async () => {
+  const v = $("tokenInput").value.trim();
+  if (!/^(ghp_|github_pat_|gho_)/.test(v)) { $("setupErr").textContent = "That doesn't look like a GitHub key. It should start with ghp_."; return; }
+  store.set("rp.token", v); start();
+};
+$("tokenInput").addEventListener("keydown", (e) => { if (e.key === "Enter") $("connectBtn").click(); });
+
+$("search").addEventListener("input", (e) => { S.filter.q = e.target.value; store.set("rp.filter", S.filter); renderList(); });
+$("areaSel").onchange = (e) => { S.filter.area = e.target.value; store.set("rp.filter", S.filter); renderList(); };
+$("statusSel").onchange = (e) => { S.filter.status = e.target.value; store.set("rp.filter", S.filter); renderList(); if (S.visible[0] && !S.visible.find((i) => i.id === S.current)) open(S.visible[0].id); };
+document.querySelectorAll(".seg button").forEach((b) => b.onclick = () => {
+  S.filter.kind = b.dataset.kind; store.set("rp.filter", S.filter);
+  document.querySelectorAll(".seg button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+  renderList(); if (S.visible[0] && !S.visible.find((i) => i.id === S.current)) open(S.visible[0].id);
+});
+$("rows").addEventListener("click", (e) => { const r = e.target.closest(".row"); if (r) open(r.dataset.id); });
+$("listToggle").onclick = () => $("list").classList.toggle("open");
+
+const cur = () => S.byId.get(S.current);
+$("approveBtn").onclick = () => cur() && decide(cur(), "approve");
+$("editBtn").onclick = () => cur() && renderEdit(cur());
+$("changesBtn").onclick = () => cur() && openDialog(cur(), "changes");
+$("discussBtn").onclick = () => cur() && openDialog(cur(), "discuss");
+$("removeBtn").onclick = () => cur() && openDialog(cur(), "remove");
+$("nextBtn").onclick = () => step(1);
+$("prevBtn").onclick = () => step(-1);
+
+$("menuBtn").onclick = (e) => { e.stopPropagation(); $("menu").classList.toggle("hidden"); };
+document.addEventListener("click", (e) => { if (!$("menu").contains(e.target)) $("menu").classList.add("hidden"); });
+$("saveNow").onclick = () => { $("menu").classList.add("hidden"); S.dirty = S.dirty || false; syncNow(); };
+$("helpBtn").onclick = () => { $("menu").classList.add("hidden"); showHelp(); };
+$("themeBtn").onclick = () => { const order = ["system", "light", "dark"]; const t = store.get("rp.theme", "system"); store.set("rp.theme", order[(order.indexOf(t) + 1) % 3]); applyTheme(); };
+$("signOut").onclick = async () => {
+  if (S.dirty) { await syncNow(); if (S.dirty && !confirm("Some decisions haven't reached GitHub yet. Sign out anyway? (They stay saved in this browser.)")) return; }
+  store.del("rp.token"); location.reload();
+};
+
+document.addEventListener("keydown", (e) => {
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  const tag = (e.target.tagName || "").toLowerCase();
+  if (tag === "input" || tag === "textarea" || tag === "select" || document.querySelector(".scrim") || $("app").classList.contains("hidden")) return;
+  if (S.editing && e.key !== "Escape") return;
+  const k = e.key.toLowerCase();
+  const map = { a: "approveBtn", e: "editBtn", c: "changesBtn", d: "discussBtn", r: "removeBtn", n: "nextBtn", arrowright: "nextBtn", p: "prevBtn", arrowleft: "prevBtn" };
+  if (k === "/") { e.preventDefault(); $("list").classList.add("open"); $("search").focus(); return; }
+  if (k === "escape" && S.editing) { open(S.current); return; }
+  if (map[k] && S.current) { e.preventDefault(); $(map[k]).click(); }
+});
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden" && S.dirty) syncNow(); });
+window.addEventListener("online", () => { if (S.dirty) syncNow(); else renderSync(); });
+window.addEventListener("offline", renderSync);
+window.addEventListener("beforeunload", (e) => { if (S.dirty) { syncNow(); } });
+
+start();
+</script>
+</body>
+</html>
