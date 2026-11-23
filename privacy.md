@@ -8,7 +8,7 @@ permalink: /privacy/
 
 Ribbon Prep ("the app") is an independent study aid for people preparing for the Oncology Certified Nurse (OCN) exam. It is made by the Ribbon Prep developer. It is not affiliated with or endorsed by the Oncology Nursing Certification Corporation (ONCC).
 
-**The short version:** the app has no accounts, no servers, and no tracking. What you enter stays on your phone unless you choose to send or save it somewhere. The Ribbon Prep developer does not collect, see, or sell your information.
+**The short version:** the app has no accounts and no tracking. What you enter (your name, answers, notes) stays on your phone unless you choose to send or save it somewhere. The app sends anonymous usage counts, such as which screens are opened, that can't be tied to you; you can turn this off in Settings. The developer does not sell any information.
 
 ## What the app stores on your phone
 
@@ -27,9 +27,20 @@ None of this is sent to the developer or to anyone else. Deleting the app delete
 ## What the app does not do
 
 - It does not create accounts or ask you to sign in.
-- It does not use analytics, advertising, or tracking tools.
+- It does not use advertising or tracking, and it does not track you across other apps or websites.
+- It does not send your name, answers, notes, or anything you type.
 - It does not collect your location, contacts, photos, or health information.
 - It does not share data with third parties.
+
+## Anonymous usage data
+
+To learn which parts of the app are useful, the app sends anonymous usage data to TelemetryDeck, a privacy-focused analytics service (telemetrydeck.com). It is on by default, and you can turn it off at any time in Settings, under Preferences, Share anonymous usage.
+
+- **What is sent:** which screens are opened; a few actions, such as starting, pausing, or finishing a practice exam (with its score, length, and time used), answering the Question of the Day, or saving a backup; whether Pro is unlocked; and the app version, iOS version, device model, and language.
+- **What is never sent:** your name, exam date, answers to questions, notes, search text, or anything you type.
+- **How it stays anonymous:** the app creates a random ID on your phone (not your device's identifier or your Apple account) and scrambles it with a one-way hash before sending, so events can't be linked to you or your device. TelemetryDeck hashes it again on their side. The data is not used for advertising and is not sold or shared.
+
+On the App Store this is listed as "Data Not Linked to You: Usage Data."
 
 ## Notifications and the Lock Screen timer
 
