@@ -4,7 +4,7 @@ title: Privacy Policy
 permalink: /privacy/
 ---
 
-**Last updated: November 23, 2026** (added automatic iCloud backup)
+**Last updated: November 24, 2026** (added the Ribbon Prep Pro purchase)
 
 Ribbon Prep ("the app") is an independent study aid for people preparing for the Oncology Certified Nurse (OCN) exam. It is made by the Ribbon Prep developer. It is not affiliated with or endorsed by the Oncology Nursing Certification Corporation (ONCC).
 
@@ -61,6 +61,10 @@ During a practice exam, a countdown can appear on your Lock Screen and in the Dy
 - **Reporting a problem or suggesting an idea:** the app prepares an email (or a share sheet). It is sent only if you choose to send it, from your own email app. It contains the question or card you are reporting and anything you write. It is used only to fix errors and improve the app.
 - **Links:** source and reference links open official websites (for example ONCC, NCI, and FDA) in your browser. Those sites have their own privacy policies.
 - **Ratings and sharing:** rating the app and sharing it happen through Apple's standard screens.
+
+## Ribbon Prep Pro purchase
+
+Ribbon Prep Pro is bought through Apple's App Store. Apple handles the payment; the developer never receives your name, Apple Account, or payment details. The app asks Apple only whether this Apple Account owns Pro, so it can unlock it (and when you tap Restore Purchases). Anonymous usage data includes whether Pro is unlocked, so the developer can count how many people use each version.
 
 ## Apple
 
