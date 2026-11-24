@@ -347,7 +347,7 @@ details summary { cursor: pointer; color: var(--ink-2); min-height: 36px; displa
 const OWNER = "kressnm", REPO = "Ribbon-Prep", MAIN = "main", BRANCH = "reviews";
 const API = "https://api.github.com";
 const AREAS = ["Care Continuum", "Oncology Nursing Practice", "Treatment Modalities",
-  "Symptom Management and Palliative Care", "Oncologic Emergencies", "Psychosocial Dimensions of Care"];
+  "Symptom Management and Supportive Care", "Oncologic Emergencies", "Psychosocial Dimensions of Care"];
 // Must match FIELDS in Tools/apply_reviews.py
 const FIELDS = {
   question: ["Area", "Question", "A", "B", "C", "D", "E", "F", "Correct", "Rationale", "Source", "Source URL"],
@@ -686,7 +686,7 @@ function renderList() {
   }).join("");
   const cur = rows.querySelector(".current"); if (cur) cur.scrollIntoView({ block: "nearest" });
 }
-const shortArea = (a) => ({ "Symptom Management and Palliative Care": "Symptom Mgmt", "Psychosocial Dimensions of Care": "Psychosocial", "Oncology Nursing Practice": "Nursing Practice" }[a] || a);
+const shortArea = (a) => ({ "Symptom Management and Supportive Care": "Symptom Mgmt", "Psychosocial Dimensions of Care": "Psychosocial", "Oncology Nursing Practice": "Nursing Practice" }[a] || a);
 
 function renderProgress() {
   const total = S.items.length, done = S.items.filter((i) => isDone(statusOf(i))).length;
