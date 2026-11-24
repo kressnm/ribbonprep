@@ -152,7 +152,8 @@ h2.stem { font-size: 21px; line-height: 1.45; font-weight: 600; margin: 0 0 16px
 
 .src-name { font-weight: 650; font-size: 17px; }
 .src-host { color: var(--ink-3); font-size: 14px; word-break: break-all; }
-.open-src { margin-top: 12px; width: 100%; }
+.open-src { margin-top: 12px; width: 100%; text-decoration: none; }
+.src-url { margin-top: 4px; word-break: break-all; user-select: all; }
 blockquote.q {
   margin: 0 0 10px; padding: 12px 14px; border-left: 4px solid var(--brand); background: var(--bg);
   border-radius: 0 10px 10px 0; white-space: pre-wrap;
@@ -751,8 +752,6 @@ function renderItem(item) {
     </section>
     <section aria-label="Source">${renderEvidence(item, v)}</section>
   </div>`;
-  const ob = $("work").querySelector(".open-src");
-  if (ob) ob.addEventListener("click", () => window.open(ob.dataset.url, "ribbon-source"));
 }
 
 function highlight(text, marks) {
@@ -773,8 +772,9 @@ function renderEvidence(item, v) {
   if (state && state.kind === "date") pageLine = `<div class="small muted" style="margin-top:6px">Page says: ${esc(state.value)} · checked ${esc(state.checked)}</div>`;
   let html = `<div class="card"><div class="label" style="margin-top:0">Source</div>
     ${name || url ? `<div class="src-name">${esc(name || host)}</div><div class="src-host">${esc(host)}</div>${pageLine}` : `<div class="muted">No source listed for this item.</div>`}
-    ${url ? `<button class="btn blue open-src" data-url="${esc(url)}">Open the source page ↗</button>
-      <div class="small muted" style="margin-top:6px">Opens in another Edge tab. Tip: drag that tab to the side of the screen to see both at once.</div>` : ""}
+    ${url ? `<a class="btn blue open-src" href="${esc(url)}" target="_blank" rel="noopener noreferrer">Open the source page ↗</a>
+      <div class="small muted" style="margin-top:6px">Opens in an Edge tab. Tip: drag that window to the side of the screen to see both at once.</div>
+      <div class="small muted src-url">${esc(url)}</div>` : ""}
   </div>`;
   html += `<div class="card"><div class="label" style="margin-top:0">What the source says</div>`;
   if (ev.quotes && ev.quotes.length) {
