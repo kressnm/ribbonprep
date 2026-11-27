@@ -471,10 +471,19 @@ async function start() {
   }
   $("loadingText").textContent = "Loading questions and flashcards…";
   try {
-    const [qcsv, fcsv, ev, state] = await Promise.all([
+    const [qcsv, fcsv, ev, state, outline] = await Promise.all([
       rawFile("Content/questions.csv", MAIN), rawFile("Content/flashcards.csv", MAIN),
       rawFile("Content/review/evidence.json", MAIN), rawFile("Content/source_state.json", MAIN),
+      rawFile("Content/outline_2026.json", MAIN).catch(() => null),
     ]);
+    // Topic names from the 2026 OCN outline, for the topic chip (Topic isn't part of the fingerprint).
+    S.topicNames = {};
+    try {
+      for (const a of (outline ? JSON.parse(outline).areas : [])) for (const t of a.topics) {
+        S.topicNames[t.code] = t.name;
+        for (const sub of t.subtopics || []) S.topicNames[sub.code] = t.name + ": " + sub.name;
+      }
+    } catch {}
     S.items = [...(await buildItems(qcsv, "question")), ...(await buildItems(fcsv, "flashcard"))];
     S.byId = new Map(S.items.map((i) => [i.id, i]));
     try { S.evidence = ev ? (JSON.parse(ev).items || {}) : {}; } catch { S.evidence = {}; }
@@ -746,7 +755,7 @@ function renderItem(item) {
   }
   $("work").innerHTML = `<div class="columns">
     <section class="card" aria-label="Item">
-      <div class="eyebrow"><span class="chip id">${item.id}</span><span class="chip">${item.kind === "question" ? "Question" : "Flashcard"}</span><span class="chip">${esc(v.Area)}</span>${st !== "todo" ? `<span class="chip st-${st}">${esc(DECISION_TEXT[st])}</span>` : ""}</div>
+      <div class="eyebrow"><span class="chip id">${item.id}</span><span class="chip">${item.kind === "question" ? "Question" : "Flashcard"}</span><span class="chip">${esc(v.Area)}</span>${(v.Topic || "").trim() ? `<span class="chip" title="Topic from the 2026 OCN test content outline">Topic ${esc(v.Topic.trim())}${S.topicNames && S.topicNames[v.Topic.trim()] ? ": " + esc(S.topicNames[v.Topic.trim()]) : ""}</span>` : ""}${st !== "todo" ? `<span class="chip st-${st}">${esc(DECISION_TEXT[st])}</span>` : ""}</div>
       ${decisionBanner(item)}
       ${left}
     </section>
