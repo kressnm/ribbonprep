@@ -36,7 +36,10 @@ Settings, then switch off Daily study reminder. You can also turn off notificati
 Settings, then Reset practice progress. Your notes and stars are kept.
 
 **Does the app cost anything or show ads?**
-Ribbon Prep is free, with every feature included. There are no ads, and the app doesn't track you across other apps or websites. It does send anonymous usage data, such as which screens are opened, to help improve the app. This is on by default, and you can turn it off in Settings, under Preferences, Share anonymous usage. See the [Privacy Policy](privacy/) for details.
+Ribbon Prep is free to download. The free version includes the Question of the Day, a sample of practice questions and a sample exam, every flashcard, Quick Sheets, Lab Values, References, search, notes, and stars. Ribbon Prep Pro is a one-time purchase (no subscription) that unlocks every question, full-length timed exams with score history, custom practice sets, the review schedule, Eliminate two, Exam Readiness, and the Drug Reference. There are no ads, and the app doesn't track you across other apps or websites. It does send anonymous usage data, such as which screens are opened, to help improve the app. This is on by default, and you can turn it off in Settings, under Preferences, Share anonymous usage. See the [Privacy Policy](privacy/) for details.
+
+**I bought Pro. How do I get it on a new phone or after reinstalling?**
+Pro comes back by itself on any iPhone signed into the same Apple Account. If it doesn't, go to Settings, Ribbon Prep Pro, then Restore Purchases. Refunds are handled by Apple at reportaproblem.apple.com.
 
 ## Privacy
 
