@@ -4,7 +4,7 @@ title: Privacy Policy
 permalink: /privacy/
 ---
 
-**Last updated: November 23, 2026** (added automatic iCloud backup)
+**Last updated: November 27, 2026** (added the Ribbon Prep Pro purchase and question updates)
 
 Ribbon Prep ("the app") is an independent study aid for people preparing for the Oncology Certified Nurse (OCN) exam. It is made by the Ribbon Prep developer. It is not affiliated with or endorsed by the Oncology Nursing Certification Corporation (ONCC).
 
@@ -55,12 +55,20 @@ If you turn on the daily study reminder, the app asks permission to send notific
 
 During a practice exam, a countdown can appear on your Lock Screen and in the Dynamic Island. It is drawn on your phone by iOS and is not sent anywhere. You can turn it off in your phone's Settings, under Ribbon Prep, Live Activities.
 
+## Question updates
+
+About once a day, the app checks this website for corrected or new practice questions and flashcards, so fixes reach you without waiting for an App Store update. It downloads one file, the same for everyone. The request contains nothing about you: no ID, no usage data, and nothing you entered. Like any website, the server (GitHub Pages) can see the internet address the request comes from; the developer does not receive it.
+
 ## Things that leave your phone only when you choose
 
 - **Backups:** Settings, then Save a backup, creates a file with your progress, notes, stars, scores, and settings. It is saved wherever you choose, such as iCloud Drive or Files on your phone. If you save it to iCloud Drive, Apple's terms for iCloud apply. The developer never receives it.
 - **Reporting a problem or suggesting an idea:** the app prepares an email (or a share sheet). It is sent only if you choose to send it, from your own email app. It contains the question or card you are reporting and anything you write. It is used only to fix errors and improve the app.
 - **Links:** source and reference links open official websites (for example ONCC, NCI, and FDA) in your browser. Those sites have their own privacy policies.
 - **Ratings and sharing:** rating the app and sharing it happen through Apple's standard screens.
+
+## Ribbon Prep Pro purchase
+
+Ribbon Prep Pro is bought through Apple's App Store. Apple handles the payment; the developer never receives your name, Apple Account, or payment details. The app asks Apple only whether this Apple Account owns Pro, so it can unlock it (and when you tap Restore Purchases). Anonymous usage data includes whether Pro is unlocked, so the developer can count how many people use each version.
 
 ## Apple
 
