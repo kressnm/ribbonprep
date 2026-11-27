@@ -4,7 +4,7 @@ title: Privacy Policy
 permalink: /privacy/
 ---
 
-**Last updated: November 23, 2026** (added automatic iCloud backup)
+**Last updated: November 26, 2026** (added question updates)
 
 Ribbon Prep ("the app") is an independent study aid for people preparing for the Oncology Certified Nurse (OCN) exam. It is made by the Ribbon Prep developer. It is not affiliated with or endorsed by the Oncology Nursing Certification Corporation (ONCC).
 
@@ -54,6 +54,10 @@ If you are signed in to iCloud with iCloud Drive turned on, the app saves a back
 If you turn on the daily study reminder, the app asks permission to send notifications. If notifications are allowed, a practice exam can also send "time left" alerts. Both are scheduled on your phone; nothing is sent over the internet to create them.
 
 During a practice exam, a countdown can appear on your Lock Screen and in the Dynamic Island. It is drawn on your phone by iOS and is not sent anywhere. You can turn it off in your phone's Settings, under Ribbon Prep, Live Activities.
+
+## Question updates
+
+About once a day, the app checks this website for corrected or new practice questions and flashcards, so fixes reach you without waiting for an App Store update. It downloads one file, the same for everyone. The request contains nothing about you: no ID, no usage data, and nothing you entered. Like any website, the server (GitHub Pages) can see the internet address the request comes from; the developer does not receive it.
 
 ## Things that leave your phone only when you choose
 
